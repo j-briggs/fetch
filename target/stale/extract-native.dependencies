@@ -1,0 +1,1 @@
+([:dependencies ([org.clojure/clojure "1.5.1"] [clj-http/clj-http "0.7.7"] [clj-time/clj-time "0.6.0"] [org.clojure/core.async "0.1.222.0-83d0c2-alpha"])])
