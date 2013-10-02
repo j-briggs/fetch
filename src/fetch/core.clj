@@ -1,9 +1,10 @@
 (ns #^{:author "Jonathan Briggs",
-       :doc "utilities to help retriev tick data"}  
+       :doc "utilities to help retrieve tick data"}  
   fetch.core
   (:require [clj-http.client :as client]
             [clojure.core.async :as async :refer [<!! >! chan go]]
-            [fetch.yahoo :as yahoo]))
+            [fetch.yahoo :as yahoo]
+            [fetch.csv :as csv]))
 
 (defn- fetch-url
   "Fetch URL"
@@ -27,5 +28,6 @@
     @res
     )))
 
-;(def urls (yahoo/create-url-list "2009-01-01" "2009-01-31" ["AAPL" "GOOG" "TRMB"]))
-;(fetch-historical-data urls {:as "UTF-8" :proxy-host "workproxy.net" :proxy-port 3128})
+(def urls (yahoo/create-url-list "2009-01-01" "2009-01-31" ["AAPL" "GOOG" "TRMB"]))
+(def data (fetch-historical-data urls {:as "UTF-8"}))
+(csv/process-csv (first data))
