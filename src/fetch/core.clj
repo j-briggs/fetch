@@ -30,4 +30,5 @@
 
 (def urls (yahoo/create-url-list "2009-01-01" "2009-01-31" ["AAPL" "GOOG" "TRMB"]))
 (def data (fetch-historical-data urls {:as "UTF-8"}))
-(csv/process-csv (first data))
+(def dataset (yahoo/stream-to-dataset (csv/process-csv (first data))))
+(incanter.core/$ :Adj-Close dataset)

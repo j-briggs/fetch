@@ -1,6 +1,7 @@
 (ns #^{:author "Jonathan Briggs",
        :doc "yahoo specific functions"} 
   fetch.yahoo
+   (:use (incanter core stats charts io))
    (:require [clj-time.core :as time]))
 
 (def #^{:private true} +base-url+ "http://itable.finance.yahoo.com/table.csv?s=%s&g=d&a=%d&b=%d&c=%d&d=%d&e=%d&f=%d")
@@ -28,3 +29,7 @@
           urls (map (partial get-full-url-yahoo y1 m1 d1 y2 m2 d2) syms)]
       urls)))
 
+(defn stream-to-dataset
+  "take the data stream and convert it to a data set"
+  [data]
+  (incanter.core/dataset [:Date :Open :High :Low :Close :Volume :Adj-Close] data))

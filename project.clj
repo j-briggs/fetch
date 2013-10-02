@@ -7,4 +7,5 @@
                  [clj-http "0.7.7"]
                  [clj-time "0.6.0"]
                  [org.clojure/core.async "0.1.222.0-83d0c2-alpha"]
-                 [clojure-csv/clojure-csv "2.0.1"]])
+                 [clojure-csv/clojure-csv "2.0.1"]
+                 [incanter "1.5.4"]])
