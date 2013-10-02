@@ -6,28 +6,26 @@
             [fetch.yahoo :as yahoo]))
 
 (defn- fetch-url
-  "Fetch one URL using HTTP Agent"
-  [url]
-  (let [result (client/get url {:as "UTF-8" :throw-exceptions false})]
+  "Fetch URL"
+  [url & [req]]
+  (let [requirements (merge req {:throw-exceptions false})
+        result (client/get url requirements)]
     (if (= (:status result) 200)
       (:body result)
       (:status result))))
 
 (defn fetch-historical-data
-  "Fetch historical prices from Yahoo! finance for the given symbols between start and end"
-  [start end syms]
+  "Fetch from the urls provided"
+  [urls & [req]]
   (time 
   (let [c (chan)
-        res (atom [])
-        urls (yahoo/create-url-list start end syms)]
+        res (atom [])]
     (doseq [url urls]
-      (go (>! c (fetch-url url))))
+      (go (>! c (fetch-url url req))))
     (doseq [_ urls]
       (swap! res conj (<!! c)))
     @res
     )))
 
-;(create-url-list "2009-01-01" "2009-01-31" ["AAPL" "GOOG" "TRMB"])
-;(map fetch-url (create-url-list "2009-01-01" "2009-01-31" ["AAPL" "GOOG" "TRMB"]))
-;(fetch-historical-data "2009-01-01" "2009-01-31" ["AAPL"])
-;(fetch-historical-data "2009-01-01" "2009-01-31" ["AAPL" "GOOG" "IBM" "ZZZZZZ"])
+;(def urls (yahoo/create-url-list "2009-01-01" "2009-01-31" ["AAPL" "GOOG" "TRMB"]))
+;(fetch-historical-data urls {:as "UTF-8" :proxy-host "workproxy.net" :proxy-port 3128})
