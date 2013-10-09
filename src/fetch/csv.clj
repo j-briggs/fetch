@@ -4,26 +4,32 @@
   (:use clojure-csv.core)
   (:require [clojure.string :as str]))
 
-(defn comment-line? [line]
+(defn comment-line? 
+  [line]
   (re-matches #"^#.*" line))
 
-(defn split-at-comma [line]
+(defn split-at-comma 
+  [line]
   (str/split line #","))
 
-(defn line-without-comments [line]
+(defn line-without-comments 
+  [line]
   (let [r (str/replace line #"#.*" "")]
     (if (pos? (count r)) r)))
 
-(defn line-without-comments-words [line]
+(defn line-without-comments-words 
+  [line]
   (let [r (str/replace line #"([A-Z][^\.!?]*[\.!?])" "")]
     (if (pos? (count r)) r)))
 
-(defn strings-to-double [chars]
+(defn strings-to-double 
+  [chars]
   (for [l chars]
     (for [v l]
       (Double/valueOf v))))
 
-(defn process-data [data]
+(defn process-data 
+  [data]
   (->> data
     (clojure.java.io/reader)
     (line-seq)
